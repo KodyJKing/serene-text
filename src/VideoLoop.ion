@@ -1,0 +1,14 @@
+export template (videoUrl) ->
+    let videoId = /(\?v=)([^&]+)/.exec(videoUrl)[2]
+    return Iframe()
+        src: "https://www.youtube.com/embed/{{videoId}}?controls=0&showinfo=0&start=1&autoplay=1&loop=1&playlist={{videoId}}"
+        frameborder: 0
+        allowfullscreen: true
+        style:
+            pointerEvents: 'none'
+            position: 'absolute'
+            height: screen.height + 'px'
+            width: screen.width + 'px'
+            top: '-2px'
+            left: '-2px'
+            zIndex: '-1'
