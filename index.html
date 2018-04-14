@@ -55,6 +55,17 @@
         <script>
             var editor, outputOpen
 
+            function parseQuery(query) {
+                let result = {}
+                query = query.substring(1)
+                let pairs = query.split('&')
+                for (let pair of pairs) {
+                    let parts = pair.split('=')
+                    result[parts[0]] = parts[1]
+                }
+                return result
+            }
+
             function toggleOutput() {
                 outputOpen = !outputOpen
                 output.style.display = outputOpen ? 'initial' : 'none'
@@ -92,13 +103,8 @@
                     oldLog.apply(null, arguments)
                 }
 
-                let url = 'https://www.youtube.com/watch?v=Ftm2uv7-Ybw'
-                // let url = 'https://www.youtube.com/watch?v=pO2_D2iDz30'
-                // let url = 'https://www.youtube.com/watch?v=aK4JSwhdcdE'
-                // let url = 'https://www.youtube.com/watch?v=8F1-1j_ZDgc'
-                // let url = 'https://www.youtube.com/watch?v=Y4KX-owEk98'
-
-                let videoId = /(\?v=)([^&]+)/.exec(url)[2]
+                let params = parseQuery(location.search)
+                let videoId = params.v || 'Ftm2uv7-Ybw'
                 let source = `https://www.youtube.com/embed/${videoId}?controls=0&showinfo=0&start=1&autoplay=1&loop=1&playlist=${videoId}`
 
                 video.style.width = screen.width + 'px'
