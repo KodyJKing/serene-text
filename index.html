@@ -86,7 +86,7 @@ function toposort(nodes, edges) {
         path.add(node)
         let parentList = parents.get(node)
         if (parentList) {
-            for (parent of parentList) {
+            for (let parent of parentList) {
                 if (path.has(parent))
                     throw new Error('Cyclic graph: ' + Array.from(path.values()).reverse().join(' -> '))
                 if (!added.has(parent))
