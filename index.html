@@ -77,11 +77,6 @@ function toposort(nodes, edges) {
         parents.get(child).push(parent)
     }
 
-    function add(node) {
-        added.add(node)
-        result.push(node)
-    }
-
     function addAncestors(node, path = new Set()) {
         path.add(node)
         let parentList = parents.get(node)
@@ -93,7 +88,8 @@ function toposort(nodes, edges) {
                     addAncestors(parent, path)
             }
         }
-        add(node)
+        added.add(node)
+        result.push(node)
         path.delete(node)
     }
 
