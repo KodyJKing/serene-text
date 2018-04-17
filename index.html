@@ -136,6 +136,7 @@ function test(nodesStr, edgesStr) {
             }
 
             var params = parseQuery(location.search)
+            let language = params.lang || 'javascript'
 
             function toggleOutput() {
                 outputOpen = !outputOpen
@@ -143,6 +144,13 @@ function test(nodesStr, edgesStr) {
             }
 
             document.addEventListener("DOMContentLoaded", function (event) {
+                let videoId = params.v || 'Ftm2uv7-Ybw'
+                let source = `https://www.youtube.com/embed/${videoId}?controls=0&showinfo=0&start=1&autoplay=1&loop=1&playlist=${videoId}`
+
+                video.style.width = screen.width + 'px'
+                video.style.height = screen.height + 'px'
+                video.src = source
+
                 outputOpen = true
                 toggleOutput()
 
@@ -150,7 +158,7 @@ function test(nodesStr, edgesStr) {
 
                 editor = ace.edit(
                     'editor', {
-                        mode: "ace/mode/javascript",
+                        mode: `ace/mode/${language}`,
                         selectionStyle: "text"
                     }
                 )
@@ -164,25 +172,22 @@ function test(nodesStr, edgesStr) {
                 else if (localStorage.file)
                     editor.setValue(localStorage.file)
 
-                let output = ace.edit('output', { selectionStyle: "text" })
-                output.setTheme("ace/theme/monokai")
-                output.setShowPrintMargin(false)
-                output.renderer.setShowGutter(false)
-                output.setReadOnly(true)
+                if (language == 'javascript') {
+                    let output = ace.edit('output', { selectionStyle: "text" })
+                    output.setTheme("ace/theme/monokai")
+                    output.setShowPrintMargin(false)
+                    output.renderer.setShowGutter(false)
+                    output.setReadOnly(true)
 
-                let oldLog = console.log
-                console.log = function () {
-                    output.session.insert({ row: output.session.getLength(), column: 0 }, '\n' + Array.from(arguments).join(' '))
-                    output.gotoLine(output.session.getLength())
-                    oldLog.apply(null, arguments)
+                    let oldLog = console.log
+                    console.log = function () {
+                        output.session.insert({ row: output.session.getLength(), column: 0 }, '\n' + Array.from(arguments).join(' '))
+                        output.gotoLine(output.session.getLength())
+                        oldLog.apply(null, arguments)
+                    }
+
                 }
 
-                let videoId = params.v || 'Ftm2uv7-Ybw'
-                let source = `https://www.youtube.com/embed/${videoId}?controls=0&showinfo=0&start=1&autoplay=1&loop=1&playlist=${videoId}`
-
-                video.style.width = screen.width + 'px'
-                video.style.height = screen.height + 'px'
-                video.src = source
             })
 
             document.addEventListener('keydown', function(e) {
@@ -195,18 +200,22 @@ function test(nodesStr, edgesStr) {
                             break
                         }
                         case 82: {
-                            e.preventDefault() // Run
-                            try {
-                                let code = '(function(){' + editor.getValue() + '})()'
-                                eval(code)
-                            } catch (err) {
-                                console.log(err)
+                            if (language == 'javascript') {
+                                e.preventDefault() // Run
+                                try {
+                                    let code = '(function(){' + editor.getValue() + '})()'
+                                    eval(code)
+                                } catch (err) {
+                                    console.log(err)
+                                }
+                                break
                             }
-                            break
                         }
                         case 192: {
-                            toggleOutput()
-                            break
+                            if (language == 'javascript') {
+                                toggleOutput()
+                                break
+                            }
                         }
                     }
                 }
