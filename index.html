@@ -163,6 +163,7 @@ function test(nodesStr, edgesStr) {
 
                 editor.setTheme("ace/theme/monokai")
                 editor.setShowPrintMargin(false)
+                editor.setOption("displayIndentGuides", false)
                 editor.setOptions({ enableBasicAutocompletion: true, enableLiveAutocompletion: true })
 
                 if (params.sample == 'true')
