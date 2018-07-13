@@ -82,15 +82,15 @@ function toposort(nodes, edges) {
             throw new Error('Cyclic graph: ' + Array.from(path.values()).reverse().join(' -> '))
         else if (visited.has(node))
             return
-            
+
         visited.add(node)
         path.add(node)
-        
+
         let parentList = parents.get(node)
         if (parentList)
             for (let parent of parentList)
                 addAncestors(parent, path)
-                
+
         result.push(node)
         path.delete(node)
     }
@@ -165,6 +165,7 @@ function test(nodesStr, edgesStr) {
                 editor.setShowPrintMargin(false)
                 editor.setOption("displayIndentGuides", false)
                 editor.setOptions({ enableBasicAutocompletion: true, enableLiveAutocompletion: true })
+                editor.renderer.setShowGutter(false)
 
                 if (params.sample == 'true')
                     editor.setValue(sample)
